@@ -11,5 +11,5 @@
 */
 
 Route::get('/', function () {
-    return view('default');
+    return view('api');
 });

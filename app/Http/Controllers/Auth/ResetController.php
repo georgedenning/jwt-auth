@@ -27,7 +27,7 @@ class ResetController extends Controller
         'token' => ['required', 'string']
     ];
     /**
-     * Undocumented function
+     * Reset a users password
      *
      * @param Illuminate\Http\Request $request
      * @return Illuminate\Http\JsonResponse

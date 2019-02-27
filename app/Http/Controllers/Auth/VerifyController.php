@@ -18,7 +18,7 @@ class VerifyController extends Controller
      * @var array
      */
     protected $rules = [
-        'verification' => ['required', 'string', 'size:30']
+        'token' => ['required', 'string', 'size:30']
     ];
     
     /**
@@ -29,8 +29,8 @@ class VerifyController extends Controller
      */
     public function verify(Request $request) : JsonResponse
     {
-        $verification = $request->only('verification');
-        $validator = Validator::make($verification, $this->rules);
+        $token = $request->only('token');
+        $validator = Validator::make($token, $this->rules);
 
         if ($validator->fails()) {
             return response()->json([
@@ -39,12 +39,12 @@ class VerifyController extends Controller
             ]);
         }
 
-        $user = $this->checkVerification($verification);
+        $user = $this->checkVerification($token);
 
         if (! $user) {
             return response()->json([
                 'success'=> false,
-                'error'=> 'Invalid verification code.'
+                'error'=> 'Invalid token.'
             ]);
         }
 
@@ -55,7 +55,7 @@ class VerifyController extends Controller
             ]);
         }
 
-        $this->confirmVerification($user, $verification);
+        $this->confirmVerification($user, $token);
 
         return response()->json([
             'success'=> true,
@@ -65,13 +65,13 @@ class VerifyController extends Controller
     /**
      * Verify a token and return the correct user.
      *
-     * @param array $verification
+     * @param array $token
      * @return App\User|false
      */
-    protected function checkVerification(array $verification)
+    protected function checkVerification(array $token)
     {
         $check = DB::table('user_verifications')
-            ->where('token', $verification)
+            ->where('token', $token)
             ->first();
 
         if (is_null($check)) {
@@ -85,15 +85,15 @@ class VerifyController extends Controller
      * Update the user to confirm the verification.
      *
      * @param \App\User $user
-     * @param array $verification
+     * @param array $token
      */
-    protected function confirmVerification(User $user, array $verification)
+    protected function confirmVerification(User $user, array $token)
     {
         $user->is_verified = 1;
         $user->email_verified_at = Carbon::now();
         $user->save();
         
         DB::table('user_verifications')
-            ->where('token', $verification)->delete();
+            ->where('token', $token)->delete();
     }
 }

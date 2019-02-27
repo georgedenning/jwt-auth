@@ -1,0 +1,21 @@
+html,
+body {
+    background: #fff;
+    color: #293237;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 200;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+}
+
+.wrap {
+    display: block;
+    position: absolute;
+    top:  50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    margin: 0 auto;
+    max-width: 56rem;
+}

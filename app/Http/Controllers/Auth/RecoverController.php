@@ -44,7 +44,7 @@ class RecoverController extends Controller
         if (! $user) {
             return response()->json([
                 'success' => false,
-                'error' => ['email' => 'Email address not found.']
+                'error' => ['email' => ['User not found.']]
             ], 401);
         }
 
